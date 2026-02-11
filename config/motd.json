@@ -1,0 +1,82 @@
+{
+    "settings": {
+        "spacing": 2
+    },
+    "widgets": [
+        {
+            "type": "hostname",
+            "enabled": true,
+            "font": "slant",
+            "color": "cyan",
+            "bold": true,
+            "spaceAfter": 0
+        },
+        {
+            "type": "separator",
+            "enabled": true,
+            "char": "─",
+            "color": "bright_black",
+            "spaceAfter": 0
+        },
+        {
+            "type": "uptime",
+            "enabled": true,
+            "label": "Uptime",
+            "spaceAfter": 2
+        },
+        {
+            "type": "last_login",
+            "enabled": true,
+            "label": "Last Login",
+            "count": 3,
+            "spaceAfter": 1
+        },
+        {
+            "type": "network",
+            "enabled": true,
+            "label": "Network",
+            "excluded_interfaces": ["lo"],
+            "spaceAfter": 1
+        },
+        {
+            "type": "system_stats",
+            "enabled": true,
+            "label": "System Stats",
+            "disk_paths": ["/",
+                "/media/scott/Disk0-SATA",
+                "/media/scott/Disk1-SATA",
+                "/media/scott/Disk3-NVME"
+            ],
+            "spaceAfter": 1
+        },
+        {
+            "type": "updates",
+            "enabled": true,
+            "label": "Updates",
+            "show_list": false,
+            "spaceAfter": 1
+        },
+        {
+            "type": "separator",
+            "enabled": true,
+            "char": "─",
+            "spaceAfter": 1
+        },
+        {
+            "type": "weather",
+            "enabled": true,
+            "label": "Weather",
+            "latitude": 31.0637,
+            "longitude": -97.8981,
+            "units": "f",
+            "timeout": 5,
+            "spaceAfter": 2
+        },
+        {
+            "type": "quote",
+            "enabled": true,
+            "label": "Verse of the Day",
+            "spaceAfter": 2
+        }
+    ]
+}
