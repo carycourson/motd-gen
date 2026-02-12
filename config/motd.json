@@ -16,19 +16,57 @@
             "enabled": true,
             "char": "─",
             "color": "bright_black",
-            "spaceAfter": 0
+            "spaceAfter": 1
         },
         {
             "type": "uptime",
             "enabled": true,
             "label": "Uptime",
-            "spaceAfter": 2
+            "row": 1
+        },
+        {
+            "type": "temperature",
+            "enabled": true,
+            "label": "CPU Temp",
+            "unit": "f",
+            "show_all": false,
+            "row": 1
+        },
+        {
+            "type": "processes",
+            "enabled": true,
+            "label": "Processes",
+            "row": 1,
+            "spaceAfter": 1
+        },
+        {
+            "type": "os_info",
+            "enabled": true,
+            "label": "OS",
+            "show_kernel": true,
+            "row": 2
+        },
+        {
+            "type": "updates",
+            "enabled": true,
+            "label": "Updates",
+            "show_list": false,
+            "row": 2,
+            "spaceAfter": 1
+        },
+        {
+            "type": "users",
+            "enabled": true,
+            "label": "Users",
+            "show_list": true,
+            "row": 3
         },
         {
             "type": "last_login",
             "enabled": true,
             "label": "Last Login",
             "count": 3,
+            "row": 3,
             "spaceAfter": 1
         },
         {
@@ -36,30 +74,28 @@
             "enabled": true,
             "label": "Network",
             "excluded_interfaces": ["lo"],
+            "show_public_ip": true,
+            "public_ip_timeout": 5,
+            "column_gap": 10,
             "spaceAfter": 1
         },
         {
             "type": "system_stats",
             "enabled": true,
             "label": "System Stats",
-            "disk_paths": ["/",
+            "disk_paths": [
+                "/",
                 "/media/scott/Disk0-SATA",
                 "/media/scott/Disk1-SATA",
                 "/media/scott/Disk3-NVME"
             ],
-            "spaceAfter": 1
-        },
-        {
-            "type": "updates",
-            "enabled": true,
-            "label": "Updates",
-            "show_list": false,
-            "spaceAfter": 1
+            "spaceAfter": 0
         },
         {
             "type": "separator",
             "enabled": true,
             "char": "─",
+            "color": "bright_black",
             "spaceAfter": 1
         },
         {
@@ -76,7 +112,7 @@
             "type": "quote",
             "enabled": true,
             "label": "Verse of the Day",
-            "spaceAfter": 2
+            "spaceAfter": 1
         }
     ]
 }

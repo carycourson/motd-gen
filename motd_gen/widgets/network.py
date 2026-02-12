@@ -2,41 +2,74 @@
 
 import socket
 import subprocess
+import requests
 from motd_gen.widgets.base import BaseWidget
 
 
 class NetworkWidget(BaseWidget):
-    """Displays hostname, IP addresses, gateway, and active interface."""
+    """Displays hostname, IP addresses, gateway, and public IP in two columns."""
 
     @property
     def name(self) -> str:
         return "network"
 
     def render(self) -> list[str]:
-        """Gather network info from system commands and sockets."""
+        """Gather network info and format as two-column layout."""
         label = self.config.get("label", "Network")
-        lines = [f"{label}:"]
+        show_public_ip = self.config.get("show_public_ip", True)
+        public_ip_timeout = self.config.get("public_ip_timeout", 5)
+        gap = self.config.get("column_gap", 4)
 
-        try:
-            hostname = socket.gethostname()
-            lines.append(f"  Hostname:  {hostname}")
-        except Exception:
-            lines.append("  Hostname:  unavailable")
+        left_entries = []
+        right_entries = []
 
+        # Left column: interfaces and gateway
         try:
             interfaces = self._get_interfaces()
             for iface, addr in interfaces:
-                lines.append(f"  {iface}:  {addr}")
-            if not interfaces:
-                lines.append("  Interfaces: none detected")
+                left_entries.append(f"{iface}:    {addr}")
         except Exception:
-            lines.append("  Interfaces: unavailable")
+            left_entries.append("Interfaces: unavailable")
 
         try:
             gateway = self._get_default_gateway()
-            lines.append(f"  Gateway:   {gateway}")
+            left_entries.append(f"Gateway: {gateway}")
         except Exception:
-            lines.append("  Gateway:   unavailable")
+            left_entries.append("Gateway: unavailable")
+
+        # Right column: hostname and public IP
+        try:
+            hostname = socket.gethostname()
+            right_entries.append(f"Hostname:  {hostname}")
+        except Exception:
+            right_entries.append("Hostname:  unavailable")
+
+        if show_public_ip:
+            try:
+                response = requests.get("https://api.ipify.org", timeout=public_ip_timeout)
+                response.raise_for_status()
+                right_entries.append(f"Public IP: {response.text}")
+            except Exception:
+                right_entries.append("Public IP: unavailable")
+
+        # Pad columns to same height
+        max_height = max(len(left_entries), len(right_entries))
+        while len(left_entries) < max_height:
+            left_entries.append("")
+        while len(right_entries) < max_height:
+            right_entries.append("")
+
+        # Calculate left column width
+        left_width = max(len(e) for e in left_entries)
+
+        lines = [f"{label}:"]
+        for i in range(max_height):
+            left = f"  {left_entries[i]}"
+            if right_entries[i]:
+                padding = left_width - len(left_entries[i]) + gap
+                lines.append(f"{left}{' ' * padding}{right_entries[i]}")
+            else:
+                lines.append(left)
 
         return lines
 
@@ -54,7 +87,6 @@ class NetworkWidget(BaseWidget):
             if not line:
                 continue
             parts = line.split()
-            # Format: index iface inet addr/prefix ...
             iface = parts[1]
             addr = parts[3].split("/")[0]
 
